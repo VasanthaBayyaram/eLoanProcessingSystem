@@ -196,14 +196,15 @@ public class ConnectionDao {
 		return status;
 	}
 
-	public LoanInfo getAllLoanDetails(LoanInfo loan, String appID) throws SQLException {
-		String sqlCommand = "SELECT *FROM Loan WHERE Application_ID=?";
+	public LoanInfo getAllLoanDetails(LoanInfo loan, String appID, String userID) throws SQLException {
+		String sqlCommand = "SELECT *FROM Loan WHERE Application_ID=? AND User_ID=?";
 		Connection connection = connect();
 		PreparedStatement pst = connection.prepareStatement(sqlCommand);
 		pst.setString(1,appID);
+		pst.setString(2,userID);
 		ResultSet rs=pst.executeQuery();
 		if (!rs.isBeforeFirst() ) {    
-		    System.out.println("no data");
+		    System.out.println("no data found");
 		} else {
 			while (rs.next()) {
 				loan.setApplno(rs.getString(1));

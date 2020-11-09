@@ -168,10 +168,12 @@ public class UserController extends HttpServlet {
 		 * write the code the display the loan status based on the given application
 		 * number
 		 */
+		HttpSession session=request.getSession();
+
 		LoanInfo loanInfo = new LoanInfo();
 		LoanInfo loan;
 		String appID=request.getParameter("applicationNumber");
-		request.setAttribute("loan", loan=connDao.getAllLoanDetails(loanInfo, appID));
+		request.setAttribute("loan", loan=connDao.getAllLoanDetails(loanInfo, appID, session.getAttribute("userName").toString()));
 		if(loan.getUserId()==null)
 			return "trackloan.jsp";
 		else
