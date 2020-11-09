@@ -20,7 +20,7 @@
 	<form action="admin?action=callemi" id="processForm" name="processForm"
 		method="post">
 		<div>
-			<label for="applicationNumber" name="applicationNumber">Application Number</label> <input
+			<label for="applicationNumber">Application Number</label> <input
 				type="text" id="applicationNumber" name="applicationNumber"
 				placeholder="Enter the Application Number" required>
 		</div>

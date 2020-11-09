@@ -26,7 +26,7 @@
 				<p>No Records Found!!</p>
 			</c:when>
 			<c:otherwise>
-				<table border="1" cellpadding="5" style="text-align: center"
+				<table border="1" style="text-align: center"
 					style="width:100%">
 					<thead>
 						<tr>

@@ -26,8 +26,7 @@
 			<br>
 			<div>
 				<strong><label for="password">Password</label></strong><input type="password"
-					id="password" name="password" placeholder="Enter your Password"
-					minlength="8" required>
+					id="password" name="password" placeholder="Enter your Password" required>
 			</div>
 			<br>
 			<div>

@@ -137,12 +137,12 @@ public class UserController extends HttpServlet {
 	private String editLoanProcess(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write the code to edit the loan info */
 
-		return null;
+		return "editloanui.jsp";
 	}
 
 	private String registerUser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write the code to redirect page to read the user details */
-		return ".jsp";
+		return "index.jsp";
 	}
 
 	private String registernewuser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
@@ -169,9 +169,14 @@ public class UserController extends HttpServlet {
 		 * number
 		 */
 		LoanInfo loanInfo = new LoanInfo();
-		loanInfo.setApplno(request.getParameter("applicationNumber"));
-		request.setAttribute("loan", connDao.getAllLoanDetails(loanInfo));
+		LoanInfo loan;
+		String appID=request.getParameter("applicationNumber");
+		request.setAttribute("loan", loan=connDao.getAllLoanDetails(loanInfo, appID));
+		if(loan.getUserId()==null)
+			return "trackloan.jsp";
+		else
 		return "loanDetails.jsp";
+
 	}
 
 	private String editloan(HttpServletRequest request, HttpServletResponse response) {

@@ -16,7 +16,7 @@
 	<h4>User Dash Board</h4>
 	<hr />
 	<div align="center">
-		<a href="application.jsp">Apply for Loan</a>
+		<a href="user?action=application1">Apply for Loan</a>
 	</div>
 	<br>
 	<div align="center">

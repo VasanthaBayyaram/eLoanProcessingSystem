@@ -196,26 +196,30 @@ public class ConnectionDao {
 		return status;
 	}
 
-	public LoanInfo getAllLoanDetails(LoanInfo loan) throws SQLException {
+	public LoanInfo getAllLoanDetails(LoanInfo loan, String appID) throws SQLException {
 		String sqlCommand = "SELECT *FROM Loan WHERE Application_ID=?";
 		Connection connection = connect();
 		PreparedStatement pst = connection.prepareStatement(sqlCommand);
-		pst.setString(1,loan.getApplno());
-		ResultSet rs=pst.executeQuery();		
-		while (rs.next()) {
-			loan.setApplno(rs.getString(1));
-			loan.setLoanName(rs.getString(2));
-			loan.setPurpose(rs.getString(3));
-			loan.setAmtrequest(rs.getInt(4));
-			loan.setDoa(rs.getString(5));
-			loan.setBstructure(rs.getString(6));
-			loan.setBindicator(rs.getString(7));
-			loan.setTindicator(rs.getString(8));
-			loan.setAddress(rs.getString(9));
-			loan.setEmail(rs.getString(10));
-			loan.setMobile(rs.getString(11));
-			loan.setStatus(rs.getString(12));
-			loan.setUserId(rs.getString(13));
+		pst.setString(1,appID);
+		ResultSet rs=pst.executeQuery();
+		if (!rs.isBeforeFirst() ) {    
+		    System.out.println("no data");
+		} else {
+			while (rs.next()) {
+				loan.setApplno(rs.getString(1));
+				loan.setLoanName(rs.getString(2));
+				loan.setPurpose(rs.getString(3));
+				loan.setAmtrequest(rs.getInt(4));
+				loan.setDoa(rs.getString(5));
+				loan.setBstructure(rs.getString(6));
+				loan.setBindicator(rs.getString(7));
+				loan.setTindicator(rs.getString(8));
+				loan.setAddress(rs.getString(9));
+				loan.setEmail(rs.getString(10));
+				loan.setMobile(rs.getString(11));
+				loan.setStatus(rs.getString(12));
+				loan.setUserId(rs.getString(13));
+			}
 		}
 		return loan;
 	}
