@@ -16,7 +16,7 @@
 	</div>
 		<h4>Edit Loan Application</h4>	
   	<hr/>
-  	<form action="${pageContext.request.contextPath}/user?action=editLoanProcess" id="editLoanApp" name="editLoanApps"
+  	<form action="user?action=editLoanProcess" id="editLoanApp" name="editLoanApps"
 		method="post">
 		<div>
 			<label for="applicationNumber">Application Number</label> <input

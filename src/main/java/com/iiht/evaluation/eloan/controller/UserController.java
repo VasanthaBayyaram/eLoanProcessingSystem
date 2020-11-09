@@ -136,7 +136,14 @@ public class UserController extends HttpServlet {
 
 	private String editLoanProcess(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write the code to edit the loan info */
-
+		HttpSession session=request.getSession();
+		LoanInfo loanInfo = new LoanInfo();
+		LoanInfo loan;
+		String appID=request.getParameter("applicationNumber");
+		request.setAttribute("loan", loan=connDao.getAllLoanDetails(loanInfo, appID, session.getAttribute("userName").toString()));
+		if(loan.getUserId()==null)
+			return "editloan.jsp";
+		else
 		return "editloanui.jsp";
 	}
 
@@ -169,7 +176,6 @@ public class UserController extends HttpServlet {
 		 * number
 		 */
 		HttpSession session=request.getSession();
-
 		LoanInfo loanInfo = new LoanInfo();
 		LoanInfo loan;
 		String appID=request.getParameter("applicationNumber");
@@ -178,7 +184,6 @@ public class UserController extends HttpServlet {
 			return "trackloan.jsp";
 		else
 		return "loanDetails.jsp";
-
 	}
 
 	private String editloan(HttpServletRequest request, HttpServletResponse response) {

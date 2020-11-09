@@ -30,7 +30,7 @@
 		<br>
 		<div>
 			<div><strong><label for="loanAmountRequested">Loan Amount Required(INR) </label></strong></div>
-			<div><input type="number" step="any" id="loanAmountRequested" name="loanAmountRequested" value="${String.format('%.2f',loan.getAmtrequest()) }" required> </div>
+			<div><input type="number" step="any" id="loanAmountRequested" name="loanAmountRequested" value="${loan.getAmtrequest()}" required> </div>
 		</div>
 		<br>
 		<div>
