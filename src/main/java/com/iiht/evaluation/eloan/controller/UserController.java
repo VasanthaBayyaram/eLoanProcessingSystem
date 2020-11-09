@@ -137,14 +137,21 @@ public class UserController extends HttpServlet {
 	private String editLoanProcess(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write the code to edit the loan info */
 		HttpSession session=request.getSession();
-		LoanInfo loanInfo = new LoanInfo();
-		LoanInfo loan;
-		String appID=request.getParameter("applicationNumber");
-		request.setAttribute("loan", loan=connDao.getAllLoanDetails(loanInfo, appID, session.getAttribute("userName").toString()));
-		if(loan.getUserId()==null)
-			return "editloan.jsp";
-		else
-		return "editloanui.jsp";
+		LoanInfo loan = new LoanInfo();
+	    loan.setApplno(request.getParameter("applictionNo"));
+		loan.setLoanName(request.getParameter("loanName"));
+		loan.setAmtrequest(Integer.parseInt(request.getParameter("loanAmountRequested")));
+		loan.setPurpose(request.getParameter("purpose"));
+		loan.setBstructure(request.getParameter("businessStructure"));
+		loan.setBindicator(request.getParameter("billingIndicator"));
+		loan.setTindicator(request.getParameter("taxIndicator"));
+		loan.setAddress(request.getParameter("address"));
+		loan.setMobile(request.getParameter("phone"));
+		loan.setEmail(request.getParameter("email"));
+		loan.setUserId(session.getAttribute("userName").toString());
+		connDao.editLoanDetails(loan);
+		return "userhome1.jsp";
+		
 	}
 
 	private String registerUser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
@@ -186,9 +193,20 @@ public class UserController extends HttpServlet {
 		return "loanDetails.jsp";
 	}
 
-	private String editloan(HttpServletRequest request, HttpServletResponse response) {
+	private String editloan(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write a code to return to editloan page */
-		return "editloan.page";
+		String appID=request.getParameter("applicationNumber");
+		HttpSession session=request.getSession();
+		LoanInfo loanInfo = new LoanInfo();
+/*		String status = connDao.trackLoanStatus(appID);
+		if(status.equalsIgnoreCase("pending")) {*/
+		request.setAttribute("loan", loanInfo=connDao.getAllLoanDetails(loanInfo, appID, session.getAttribute("userName").toString()));
+		if(loanInfo.getUserId()==null)
+			return "editloan.jsp";
+		else
+		return "editloanui.jsp";
+/*		} else
+			return "editloan.jsp";*/
 	}
 
 	private String trackloan(HttpServletRequest request, HttpServletResponse response) throws SQLException {

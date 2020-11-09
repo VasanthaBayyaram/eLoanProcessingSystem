@@ -84,7 +84,6 @@ public class ConnectionDao {
 		}
 		return pageToBeDisplayed;
 	}
-	
 
 	public int registerALoan(LoanInfo loaninfo) throws SQLException {
 		Connection connection = connect();
@@ -125,8 +124,8 @@ public class ConnectionDao {
 			String email = rs.getString(10);
 			String mobile = rs.getString(11);
 			String status = rs.getString(12);
-			LoanInfo loanInfo = new LoanInfo(applno, loanName, purpose, amtrequest, doa, bstructure, bindicator, tindicator, address, email,
-					mobile, status);
+			LoanInfo loanInfo = new LoanInfo(applno, loanName, purpose, amtrequest, doa, bstructure, bindicator,
+					tindicator, address, email, mobile, status);
 			loansList.add(loanInfo);
 		}
 		return loansList;
@@ -140,16 +139,16 @@ public class ConnectionDao {
 		pst.setInt(1, Integer.parseInt(approvedLoan.getApplno()));
 		ResultSet rs = pst.executeQuery();
 		rs.next();
-		int sanctioned_Loan_Amount= rs.getInt(1);
-		int loan_Term= approvedLoan.getLoanterm();
-		int term_Payment_Amount = (sanctioned_Loan_Amount) * (1 + interest_Rate/100) ^ (loan_Term);
-		int emi =  term_Payment_Amount/loan_Term;
+		int sanctioned_Loan_Amount = rs.getInt(1);
+		int loan_Term = approvedLoan.getLoanterm();
+		int term_Payment_Amount = (sanctioned_Loan_Amount) * (1 + interest_Rate / 100) ^ (loan_Term);
+		int emi = term_Payment_Amount / loan_Term;
 		approvedLoan.setEmi(emi);
 		approvedLoan.setAmotsanctioned(rs.getInt(1));
 		LoanDto loanDto = new LoanDto(approvedLoan.getApplno(), approvedLoan.getAmotsanctioned(), emi);
 		return loanDto;
 	}
-	
+
 	public List<ApprovedLoan> updateEMIDetailsInDB(ApprovedLoan aLoan) throws SQLException {
 		List<ApprovedLoan> approvedLoansList = new ArrayList<ApprovedLoan>();
 		Connection connection = connect();
@@ -162,10 +161,11 @@ public class ConnectionDao {
 		pst.setString(5, aLoan.getLcd());
 		pst.setInt(6, aLoan.getEmi());
 		pst.executeUpdate();
-		String sqlCommandForDisplay = "SELECT DISTINCT *FROM ApprovedLoans WHERE Application_ID='"+aLoan.getApplno()+"';";
+		String sqlCommandForDisplay = "SELECT DISTINCT *FROM ApprovedLoans WHERE Application_ID='" + aLoan.getApplno()
+				+ "';";
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery(sqlCommandForDisplay);
-		while(rs.next()) {
+		while (rs.next()) {
 			String applno = rs.getString(1);
 			int amountsanctioned = rs.getInt(2);
 			int loanterm = rs.getInt(3);
@@ -200,11 +200,11 @@ public class ConnectionDao {
 		String sqlCommand = "SELECT *FROM Loan WHERE Application_ID=? AND User_ID=?";
 		Connection connection = connect();
 		PreparedStatement pst = connection.prepareStatement(sqlCommand);
-		pst.setString(1,appID);
-		pst.setString(2,userID);
-		ResultSet rs=pst.executeQuery();
-		if (!rs.isBeforeFirst() ) {    
-		    System.out.println("no data found");
+		pst.setString(1, appID);
+		pst.setString(2, userID);
+		ResultSet rs = pst.executeQuery();
+		if (!rs.isBeforeFirst()) {
+			System.out.println("no data found");
 		} else {
 			while (rs.next()) {
 				loan.setApplno(rs.getString(1));
@@ -225,8 +225,20 @@ public class ConnectionDao {
 		return loan;
 	}
 
-	public String editLoanDetails(String applID) throws SQLException {
-		return applID;
+	public void editLoanDetails(LoanInfo loan) throws SQLException {
+		String sqlCommand = "UPDATE Loan SET Mobile_Number=?,Loan_Name=?,Loan_Requested_Amount=?,Bussiness_Structure=?,Billing_Indicator=?,Tax_Payer=?,Address=?,Email_ID=? WHERE Application_ID=?";
+		Connection connection = connect();
+		PreparedStatement pst = connection.prepareStatement(sqlCommand);
+		pst.setString(1, loan.getMobile());
+		pst.setString(2, loan.getLoanName());
+		pst.setInt(3, loan.getAmtrequest());
+		pst.setString(4, loan.getBstructure());
+		pst.setString(5, loan.getBindicator());
+		pst.setString(6, loan.getTindicator());
+		pst.setString(7, loan.getAddress());
+		pst.setString(8, loan.getEmail());
+		pst.setString(9, loan.getApplno());
+		pst.executeUpdate();
 
 	}
 

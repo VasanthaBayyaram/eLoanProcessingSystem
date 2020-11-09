@@ -16,7 +16,7 @@
 	<div align="right">
 		<a href="index.jsp">Logout</a>
 	</div>
-	<br>
+	<hr />
 
 	<h3>Loan Details</h3>
 	<div>

@@ -16,8 +16,7 @@
 	</div>
 		<h4>Edit Loan Application</h4>	
   	<hr/>
-  	<form action="user?action=editLoanProcess" id="editLoanApp" name="editLoanApps"
-		method="post">
+  	<form action="user?action=editloan" method="post">
 		<div>
 			<label for="applicationNumber">Application Number</label> <input
 				type="text" id="applicationNumber" name="applicationNumber"
