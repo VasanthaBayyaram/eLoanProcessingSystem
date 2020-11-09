@@ -14,9 +14,21 @@
 	<div align="right">
 		<a href="index.jsp">Logout</a>
 	</div>
-		<h4>Edit Loan Application</h4>
+		<h4>Edit Loan Application</h4>	
   	<hr/>
-  	
+  	<form action="editLoan" id="editLoanApp" name="editLoanApps"
+		method="post">
+		<div>
+			<label for="applicationNumber">Application Number</label> <input
+				type="text" id="applicationNumber" name="applicationNumber"
+				placeholder="Enter the Application Number" required>
+		</div>
+		<br>
+		<div>
+			<button type="submit" value="submit">Submit</button>
+		</div>
+
+	</form>
   	
   	<hr/>
   		<jsp:include page="footer.jsp" />

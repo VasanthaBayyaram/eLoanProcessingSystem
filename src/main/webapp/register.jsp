@@ -14,13 +14,13 @@
 		<form action="user?action=registernewuser" id="signUpForm"
 			name="signUpForm" autocomplete="off" method="post">
 			<div>
-				<label for="loginId">Login ID</label> <input type="text"
+				<strong><label for="loginId">Login ID</label></strong> <input type="text"
 					id="loginId" name="loginId" placeholder="Enter your Login ID"
 					maxlength="20" required>
 			</div>
 			<br>
 			<div>
-				<label for="password">Password</label> <input type="password"
+				<strong><label for="password">Password</label></strong> <input type="password"
 					id="password" name="password" placeholder="Enter your Password"
 					pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
 					title="Must contain at least 1 number, 1 uppercase, 1 lowercase letter and at least 8 or more characters"
@@ -28,7 +28,7 @@
 			</div>
 			<br>
 			<div>
-				<label for="confirmPassword">Confirm Password</label> <input
+				<strong><label for="confirmPassword">Confirm Password</label></strong> <input
 					type="password" id="confirmPassword" name="confirmPassword"
 					placeholder="Re-enter your Password" oninput="validatePassWord();"
 					required>

@@ -85,6 +85,7 @@ public class AdminController extends HttpServlet {
 		/* write the code for updatestatus of loan and return to admin home page */
 		LoanInfo loan = new LoanInfo();
 		loan.setApplno(request.getParameter("applno"));
+		String lstatus = request.getParameter("status");
 		loan.setStatus("Approved");
 		String status = loan.getStatus();
 		connDao.updateLoanStatus(Integer.parseInt(loan.getApplno()),status);

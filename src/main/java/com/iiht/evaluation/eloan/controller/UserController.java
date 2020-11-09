@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.iiht.evaluation.eloan.dao.ConnectionDao;
 import com.iiht.evaluation.eloan.dto.LoanDto;
@@ -97,29 +98,34 @@ public class UserController extends HttpServlet {
 
 	private String validate(HttpServletRequest request, HttpServletResponse response) throws SQLException, ELoanException {
 		/* write the code to validate the user */
+		HttpSession session=request.getSession();
+		String loginid = request.getParameter("loginid");
 		User user = new User();
 		user.setUsername(request.getParameter("loginid"));
 		user.setPassword(request.getParameter("password"));
+		session.setAttribute( "userName", loginid); 
 		String pageToBeDisplayed = connDao.validateAUserWhileLogin(user);
 		return pageToBeDisplayed;
 	}
 
 	private String placeloan(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write the code to place the loan information */
+		HttpSession session=request.getSession();
 		LoanInfo loanInfo = new LoanInfo();
-		loanInfo.setApplno(request.getParameter("appID"));
+		loanInfo.setLoanName(request.getParameter("loanName"));
 		loanInfo.setPurpose(request.getParameter("purpose"));
-		loanInfo.setAmtrequest(Integer.parseInt(request.getParameter("amountRequested")));
-//		setAmtrequest(request.getParameter("amountRequested"));
-		loanInfo.setDoa(request.getParameter("dao"));
-		loanInfo.setBstructure(request.getParameter("bstructure"));
-		loanInfo.setBindicator(request.getParameter("bindicator"));
+		loanInfo.setAmtrequest(Integer.parseInt(request.getParameter("loanAmountRequested")));
+		loanInfo.setDoa(request.getParameter("loanApplicationDate"));
+		loanInfo.setBstructure(request.getParameter("businessStructure"));
+		loanInfo.setBindicator(request.getParameter("billingIndicator"));
+		loanInfo.setTindicator(request.getParameter("taxIndicator"));
 		loanInfo.setAddress(request.getParameter("address"));
 		loanInfo.setEmail(request.getParameter("email"));
-		loanInfo.setMobile(request.getParameter("mobile"));
-		loanInfo.setStatus(request.getParameter("status"));
+		loanInfo.setMobile(request.getParameter("PhoneNumber"));
+		loanInfo.setStatus("pending");
+		loanInfo.setUserId(session.getAttribute("userName").toString());
 		int rows = connDao.registerALoan(loanInfo);
-		return null;
+		return "userhome1.jsp";
 	}
 
 	private String application1(HttpServletRequest request, HttpServletResponse response) {
@@ -162,9 +168,10 @@ public class UserController extends HttpServlet {
 		 * write the code the display the loan status based on the given application
 		 * number
 		 */
-		String appID = request.getParameter("appID");
-		String status = connDao.trackLoanStatus(appID);
-		return status;
+		LoanInfo loanInfo = new LoanInfo();
+		loanInfo.setApplno(request.getParameter("applicationNumber"));
+		request.setAttribute("loan", connDao.getAllLoanDetails(loanInfo));
+		return "loanDetails.jsp";
 	}
 
 	private String editloan(HttpServletRequest request, HttpServletResponse response) {
@@ -172,10 +179,13 @@ public class UserController extends HttpServlet {
 		return "editloan.page";
 	}
 
-	private String trackloan(HttpServletRequest request, HttpServletResponse response) {
+	private String trackloan(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write a code to return to trackloan page */
-		LoanDto loan = new LoanDto();
-		String status = connDao.trackLoanStatus(loan.getApplno());
+		LoanInfo loan = new LoanInfo();
+		String appId= request.getParameter("applicationNumber");
+		String status = connDao.trackLoanStatus(appId);
+		loan.setApplno(appId);
+		loan.setStatus(status);
 		return "trackloan.page";
 	}
 

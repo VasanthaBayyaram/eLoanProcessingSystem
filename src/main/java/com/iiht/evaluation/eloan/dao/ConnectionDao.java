@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.xml.crypto.KeySelector.Purpose;
 
 import com.iiht.evaluation.eloan.dto.LoanDto;
 import com.iiht.evaluation.eloan.exception.ELoanException;
@@ -83,20 +84,24 @@ public class ConnectionDao {
 		}
 		return pageToBeDisplayed;
 	}
+	
 
 	public int registerALoan(LoanInfo loaninfo) throws SQLException {
 		Connection connection = connect();
-		String sqlCommand = "INSERT INTO LOANINFO( );";
+		String sqlCommand = "INSERT INTO Loan(Loan_Name, Purpose, Loan_Requested_Amount, Application_Date, Bussiness_Structure, Billing_Indicator, Tax_Payer, Address, Email_ID, Mobile_Number, Status, User_ID) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement pst = connection.prepareStatement(sqlCommand);
-		pst.setString(1, loaninfo.getApplno());
+		pst.setString(1, loaninfo.getLoanName());
 		pst.setString(2, loaninfo.getPurpose());
 		pst.setInt(3, loaninfo.getAmtrequest());
 		pst.setString(4, loaninfo.getDoa());
 		pst.setString(5, loaninfo.getBstructure());
 		pst.setString(6, loaninfo.getBindicator());
-		pst.setString(7, loaninfo.getAddress());
-		pst.setString(8, loaninfo.getEmail());
-		pst.setString(9, loaninfo.getMobile());
+		pst.setString(7, loaninfo.getTindicator());
+		pst.setString(8, loaninfo.getAddress());
+		pst.setString(9, loaninfo.getEmail());
+		pst.setString(10, loaninfo.getMobile());
+		pst.setString(11, loaninfo.getStatus());
+		pst.setString(12, loaninfo.getUserId());
 		int result = pst.executeUpdate();
 		return result;
 	}
@@ -109,16 +114,18 @@ public class ConnectionDao {
 		ResultSet rs = st.executeQuery(sqlCommand);
 		while (rs.next()) {
 			String applno = rs.getString(1);
+			String loanName = rs.getString(2);
 			String purpose = rs.getString(3);
 			int amtrequest = rs.getInt(4);
 			String doa = rs.getString(5);
 			String bstructure = rs.getString(6);
 			String bindicator = rs.getString(7);
+			String tindicator = rs.getString(8);
 			String address = rs.getString(9);
 			String email = rs.getString(10);
 			String mobile = rs.getString(11);
 			String status = rs.getString(12);
-			LoanInfo loanInfo = new LoanInfo(applno, purpose, amtrequest, doa, bstructure, bindicator, address, email,
+			LoanInfo loanInfo = new LoanInfo(applno, loanName, purpose, amtrequest, doa, bstructure, bindicator, tindicator, address, email,
 					mobile, status);
 			loansList.add(loanInfo);
 		}
@@ -126,7 +133,7 @@ public class ConnectionDao {
 	}
 
 	public LoanDto calculateEmi(ApprovedLoan approvedLoan) throws SQLException {
-		int interest_Rate =8;
+		int interest_Rate = 8;
 		Connection connection = connect();
 		String sqlCommand = "SELECT Loan_Requested_Amount FROM Loan WHERE Application_ID=?;";
 		PreparedStatement pst = connection.prepareStatement(sqlCommand);
@@ -182,11 +189,35 @@ public class ConnectionDao {
 
 	public String trackLoanStatus(String applID) throws SQLException {
 		Connection connection = connect();
-		String sqlCommand = "SELECT status FROM Loan WHERE applno='" + applID + "';";
+		String sqlCommand = "SELECT status FROM Loan WHERE Application_ID='" + applID + "';";
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery(sqlCommand);
-		String status = rs.getString(12);
+		String status = rs.getString(1);
 		return status;
+	}
+
+	public LoanInfo getAllLoanDetails(LoanInfo loan) throws SQLException {
+		String sqlCommand = "SELECT *FROM Loan WHERE Application_ID=?";
+		Connection connection = connect();
+		PreparedStatement pst = connection.prepareStatement(sqlCommand);
+		pst.setString(1,loan.getApplno());
+		ResultSet rs=pst.executeQuery();		
+		while (rs.next()) {
+			loan.setApplno(rs.getString(1));
+			loan.setLoanName(rs.getString(2));
+			loan.setPurpose(rs.getString(3));
+			loan.setAmtrequest(rs.getInt(4));
+			loan.setDoa(rs.getString(5));
+			loan.setBstructure(rs.getString(6));
+			loan.setBindicator(rs.getString(7));
+			loan.setTindicator(rs.getString(8));
+			loan.setAddress(rs.getString(9));
+			loan.setEmail(rs.getString(10));
+			loan.setMobile(rs.getString(11));
+			loan.setStatus(rs.getString(12));
+			loan.setUserId(rs.getString(13));
+		}
+		return loan;
 	}
 
 	public String editLoanDetails(String applID) throws SQLException {

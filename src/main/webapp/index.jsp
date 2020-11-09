@@ -19,13 +19,13 @@
 		<h3>Log In</h3>
 		<form action="user?action=validate" id="loginform" name="loginform" autocomplete="off" method="post">
 			<div>
-				<label for="loginid">Login ID</label> <input type="text"
+				<strong><label for="loginid">Login ID</label></strong> <input type="text"
 					id="loginid" name="loginid" placeholder="Enter your Login ID"
 					maxlength="20" required>
 			</div>
 			<br>
 			<div>
-				<label for="password">Password</label> <input type="password"
+				<strong><label for="password">Password</label></strong><input type="password"
 					id="password" name="password" placeholder="Enter your Password"
 					minlength="8" required>
 			</div>

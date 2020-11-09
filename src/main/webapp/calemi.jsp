@@ -19,7 +19,7 @@
 	</div>
 	<h4>EMI Calculator</h4>
 	<hr />
-	<form action="user?action=registernewuser">
+	<form>
 		<c:choose>
 			<c:when
 				test="${ApprovedLoanDetails==null || ApprovedLoanDetails.isEmpty() }">

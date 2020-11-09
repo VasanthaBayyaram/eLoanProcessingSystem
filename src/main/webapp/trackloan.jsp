@@ -14,11 +14,12 @@
 	<div align="right">
 		<a href="index.jsp">Logout</a>
 	</div>
+		<hr />
 	<h4>Track Loan Application</h4>
-		<form action="admin?action=callemi" id="trackLoanApp" name="trackLoanApp"
+		<form action="user?action=displaystatus" id="trackLoanApp" name="trackLoanApp"
 		method="post">
 		<div>
-			<label for="applicationNumber" name="applicationNumber">Application Number</label> <input
+			<label for="applicationNumber">Application Number</label> <input
 				type="text" id="applicationNumber" name="applicationNumber"
 				placeholder="Enter the Application Number" required>
 		</div>
@@ -28,7 +29,6 @@
 		</div>
 
 	</form>
-	<hr />
 	<hr />
 	<jsp:include page="footer.jsp" />
 
